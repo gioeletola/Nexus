@@ -240,7 +240,7 @@ const CAT_COLORS={world:'#c8371a',tech:'#1a6bc8',science:'#1a9b5f',business:'#b8
 
 let currentFeed='world';
 
-// ════════ FETCH RSS via rss2json ════════
+// ════════ FETCH RSS via server proxy ════════
 async function fetchRSS(feedKey){
   const urls=FEEDS[feedKey]||FEEDS.world;
   const allItems=[];
@@ -248,8 +248,8 @@ async function fetchRSS(feedKey){
 
   await Promise.all(urls.map(async url=>{
     try{
-      const apiUrl=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&count=8`;
-      const res=await fetch(apiUrl,{signal:AbortSignal.timeout(8000)});
+      const apiUrl=`/api/rss?url=${encodeURIComponent(url)}&count=8`;
+      const res=await fetch(apiUrl,{signal:AbortSignal.timeout(12000)});
       if(!res.ok) return;
       const data=await res.json();
       if(data.status==='ok'&&data.items?.length){
